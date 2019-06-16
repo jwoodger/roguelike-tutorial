@@ -5,4 +5,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.10" />
+    <PackageReference Include="SadConsole" Version="8.6.0" />
+  </ItemGroup>
+
 </Project>
