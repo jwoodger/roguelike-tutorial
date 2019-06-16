@@ -16,8 +16,10 @@ along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using SadConsole;
+
+using Game = SadConsole.Game;
 
 namespace RLTutorial {
 
@@ -41,23 +43,74 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="args">Command-line arguments (unused).</param>
         static void Main(string[] args) {
-            SadConsole.Game.Create(ConsoleWidth, ConsoleHeight);
-            SadConsole.Game.OnInitialize = Initialize;
+            new Program().Play();
+        }
 
-            SadConsole.Game.Instance.Run();
-            SadConsole.Game.Instance.Dispose();
+        private int playerX;
+        private int playerY;
+        private Console console;
+
+        /// <summary>
+        ///   Creates the application. Sets up the user interface and the game state.
+        /// </summary>
+        Program() {
+            playerX = 1;
+            playerY = 1;
+
+            Game.Create(ConsoleWidth, ConsoleHeight);
+            Game.OnInitialize = Initialize;
+            Game.OnDraw = Draw;
+            Game.OnUpdate = Update;
+        }
+
+        /// <summary>
+        ///   Begins the game, and then destroys the game window when it is finished.
+        /// </summary>
+        void Play() {
+            Game.Instance.Run();
+            Game.Instance.Dispose();
         }
 
         /// <summary>
         ///   Callback for SadConsole. Sets up the console and other components.
         /// </summary>
-        static void Initialize() {
-            var console = new Console(ConsoleWidth, ConsoleHeight);
-            console.FillWithRandomGarbage();
-            console.Fill(new Rectangle(3, 3, 22, 3), Color.White, Color.Black, ' ', SpriteEffects.None);
-            console.Print(4, 4, "Welcome to the game!");
+        void Initialize() {
+            console = new Console(ConsoleWidth, ConsoleHeight);
+            Global.CurrentScreen = console;
+        }
 
-            SadConsole.Global.CurrentScreen = console;
+        /// <summary>
+        ///   Callback for SadConsole. Outputs the game state onto the terminal.
+        /// </summary>
+        /// <param name="time">Elapsed time (unused).</param>
+        void Draw(GameTime time) {
+            console.Clear();
+            console.Print(0, 0, "Use the arrow keys to move.");
+            console.SetGlyph(playerX, playerY, '@');
+        }
+
+        /// <summary>
+        ///   Callback for SadConsole. Reads user input and updates the game state.
+        /// </summary>
+        /// <param name="time">Elapsed time (unused).</param>
+        void Update(GameTime time) {
+            if (Global.KeyboardState.KeysPressed.Count == 0) {
+                return;
+            }
+            switch (Global.KeyboardState.KeysPressed[0].Key) {
+            case Keys.Up:
+                playerY--;
+                break;
+            case Keys.Down:
+                playerY++;
+                break;
+            case Keys.Left:
+                playerX--;
+                break;
+            case Keys.Right:
+                playerX++;
+                break;
+            }
         }
     }
 }
