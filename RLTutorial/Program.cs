@@ -1,22 +1,21 @@
 /*
-This file is part of RLTutorial.
-
-RLTutorial is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-RLTutorial is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * This file is part of RLTutorial.
+ *
+ * RLTutorial is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RLTutorial is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
 using Game = SadConsole.Game;
@@ -48,6 +47,7 @@ namespace RLTutorial {
 
         private int playerX;
         private int playerY;
+        private Controller controller;
         private Console console;
 
         /// <summary>
@@ -76,6 +76,7 @@ namespace RLTutorial {
         /// </summary>
         void Initialize() {
             console = new Console(ConsoleWidth, ConsoleHeight);
+            controller = new Controller(Global.KeyboardState);
             Global.CurrentScreen = console;
         }
 
@@ -94,21 +95,22 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="time">Elapsed time (unused).</param>
         void Update(GameTime time) {
-            if (Global.KeyboardState.KeysPressed.Count == 0) {
+            var command = controller.InputCommand();
+            if (command == null) {
                 return;
             }
-            switch (Global.KeyboardState.KeysPressed[0].Key) {
-            case Keys.Up:
+            switch (command) {
+            case Command.MoveNorth:
                 playerY--;
                 break;
-            case Keys.Down:
+            case Command.MoveSouth:
                 playerY++;
                 break;
-            case Keys.Left:
-                playerX--;
-                break;
-            case Keys.Right:
+            case Command.MoveEast:
                 playerX++;
+                break;
+            case Command.MoveWest:
+                playerX--;
                 break;
             }
         }
