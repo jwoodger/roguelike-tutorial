@@ -23,7 +23,7 @@ namespace RLTutorial {
     /// <summary>
     ///   The generic entity which can represent any in-game object.
     /// </summary>
-    class Entity {
+    public class Entity {
 
         /// <summary>
         ///   The x-coordinate of the entity.

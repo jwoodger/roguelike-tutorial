@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RLTutorial", "RLTutorial\RLTutorial.csproj", "{0B3ECC9B-8147-45B9-A702-F0D203291FE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RLTutorialTest", "RLTutorialTest\RLTutorialTest.csproj", "{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{0B3ECC9B-8147-45B9-A702-F0D203291FE2}.Release|x64.Build.0 = Release|Any CPU
 		{0B3ECC9B-8147-45B9-A702-F0D203291FE2}.Release|x86.ActiveCfg = Release|Any CPU
 		{0B3ECC9B-8147-45B9-A702-F0D203291FE2}.Release|x86.Build.0 = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|x64.Build.0 = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Debug|x86.Build.0 = Debug|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|x64.ActiveCfg = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|x64.Build.0 = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|x86.ActiveCfg = Release|Any CPU
+		{5BE4051C-88DC-4BBA-A238-3BB80118B2AA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
