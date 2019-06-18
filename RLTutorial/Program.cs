@@ -45,8 +45,7 @@ namespace RLTutorial {
             new Program().Play();
         }
 
-        private int playerX;
-        private int playerY;
+        private Entity hero;
         private Controller controller;
         private Console console;
 
@@ -54,8 +53,7 @@ namespace RLTutorial {
         ///   Creates the application. Sets up the user interface and the game state.
         /// </summary>
         Program() {
-            playerX = 1;
-            playerY = 1;
+            hero = new Entity(ConsoleWidth / 2, ConsoleHeight / 2, '@', Color.White);
 
             Game.Create(ConsoleWidth, ConsoleHeight);
             Game.OnInitialize = Initialize;
@@ -86,8 +84,8 @@ namespace RLTutorial {
         /// <param name="time">Elapsed time (unused).</param>
         void Draw(GameTime time) {
             console.Clear();
-            console.Print(0, 0, "Use the arrow keys to move.");
-            console.SetGlyph(playerX, playerY, '@');
+            console.Print(0, 0, "Use the arrow keys or HJKL to move.");
+            console.Print(hero.X, hero.Y, hero.Glyph);
         }
 
         /// <summary>
@@ -101,16 +99,16 @@ namespace RLTutorial {
             }
             switch (command) {
             case Command.MoveNorth:
-                playerY--;
+                hero.Move(0, -1);
                 break;
             case Command.MoveSouth:
-                playerY++;
+                hero.Move(0, 1);
                 break;
             case Command.MoveEast:
-                playerX++;
+                hero.Move(1, 0);
                 break;
             case Command.MoveWest:
-                playerX--;
+                hero.Move(-1, 0);
                 break;
             }
         }
