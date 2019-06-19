@@ -21,10 +21,31 @@ namespace RLTutorial {
     ///   Any instruction that can be given to an in-game entity. Commands can be generated from
     ///   user input or from the AI.
     /// </summary>
-    enum Command {
-        MoveNorth,
-        MoveSouth,
-        MoveEast,
-        MoveWest,
+    public interface Command {}
+
+    /// <summary>
+    ///   A command to move an entity.
+    /// </summary>
+    public class Move : Command {
+
+        /// <summary>
+        ///   The amount by which to move the entity left or right.
+        /// </summary>
+        public int DeltaX { get; private set; }
+
+        /// <summary>
+        ///   The amount by which to move the entity up or down.
+        /// </summary>
+        public int DeltaY { get; private set; }
+
+        /// <summary>
+        ///   Creates a new move command.
+        /// </summary>
+        /// <param name="dx">The delta-x property.</param>
+        /// <param name="dy">The delta-y property.</param>
+        public Move(int dx, int dy) {
+            DeltaX = dx;
+            DeltaY = dy;
+        }
     }
 }

@@ -30,14 +30,18 @@ namespace RLTutorial {
     class Controller {
 
         private static Dictionary<Keys, Command> keyCommands = new Dictionary<Keys, Command>() {
-            { Keys.Up, Command.MoveNorth },
-            { Keys.K, Command.MoveNorth },
-            { Keys.Down, Command.MoveSouth },
-            { Keys.J, Command.MoveSouth },
-            { Keys.Left, Command.MoveWest },
-            { Keys.H, Command.MoveWest },
-            { Keys.Right, Command.MoveEast },
-            { Keys.L, Command.MoveEast },
+            { Keys.Up, new Move(0, -1) },
+            { Keys.K, new Move(0, -1) },
+            { Keys.Down, new Move(0, 1) },
+            { Keys.J, new Move(0, 1) },
+            { Keys.Left, new Move(-1, 0) },
+            { Keys.H, new Move(-1, 0) },
+            { Keys.Right, new Move(1, 0) },
+            { Keys.L, new Move(1, 0) },
+            { Keys.Y, new Move(-1, -1) },
+            { Keys.U, new Move(1, -1) },
+            { Keys.B, new Move(-1, 1) },
+            { Keys.N, new Move(1, 1) },
         };
 
         private Keyboard keyboard;
@@ -55,7 +59,7 @@ namespace RLTutorial {
         /// </summary>
         /// <returns>A command to execute, if a key is pressed and recognized, or null if no key is
         /// pressed or no command is found for the given key.</returns>
-        public Command? InputCommand() {
+        public Command InputCommand() {
             if (keyboard.KeysPressed.Count == 0) {
                 return null;
             }

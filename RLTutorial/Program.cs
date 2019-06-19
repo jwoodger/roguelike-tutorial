@@ -98,17 +98,8 @@ namespace RLTutorial {
                 return;
             }
             switch (command) {
-            case Command.MoveNorth:
-                hero.Move(0, -1);
-                break;
-            case Command.MoveSouth:
-                hero.Move(0, 1);
-                break;
-            case Command.MoveEast:
-                hero.Move(1, 0);
-                break;
-            case Command.MoveWest:
-                hero.Move(-1, 0);
+            case Move move:
+                hero.Move(move.DeltaX, move.DeltaY);
                 break;
             }
         }
