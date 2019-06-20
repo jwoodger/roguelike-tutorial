@@ -37,6 +37,7 @@ namespace RLTutorial {
         /// </summary>
         const int ConsoleHeight = 25;
 
+
         /// <summary>
         ///   The main entry point to the program.
         /// </summary>
@@ -47,7 +48,7 @@ namespace RLTutorial {
 
         private World world;
         private Controller controller;
-        private Console console;
+        private Display display;
 
         /// <summary>
         ///   Creates the application. Sets up the user interface and the game state.
@@ -73,9 +74,8 @@ namespace RLTutorial {
         ///   Callback for SadConsole. Sets up the console and other components.
         /// </summary>
         void Initialize() {
-            console = new Console(ConsoleWidth, ConsoleHeight);
+            display = new Display(ConsoleWidth, ConsoleHeight);
             controller = new Controller(Global.KeyboardState);
-            Global.CurrentScreen = console;
         }
 
         /// <summary>
@@ -83,9 +83,7 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="time">Elapsed time (unused).</param>
         void Draw(GameTime time) {
-            console.Clear();
-            console.Print(0, 0, "Use the arrow keys or HJKL to move.");
-            console.Print(world.Hero.X, world.Hero.Y, world.Hero.Glyph);
+            display.Render(world);
         }
 
         /// <summary>
