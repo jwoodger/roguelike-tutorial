@@ -15,6 +15,8 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 
 namespace RLTutorial {
@@ -24,10 +26,23 @@ namespace RLTutorial {
     /// </summary>
     public class World {
 
+        private List<Entity> entityList;
+
         /// <summary>
         ///   The player character's entity.
         /// </summary>
         public Entity Hero { get; private set; }
+
+        /// <summary>
+        ///   Every entity that exists in the world.
+        /// </summary>
+        public IEnumerable<Entity> Entities {
+            get {
+                foreach (var entity in entityList) {
+                    yield return entity;
+                }
+            }
+        }
 
         /// <summary>
         ///   Creates a new game world.
@@ -36,6 +51,10 @@ namespace RLTutorial {
         /// <param name="startY">The hero's starting y-coordinate.</param>
         public World(int startX, int startY) {
             Hero = new Entity(startX, startY, '@', Color.WhiteSmoke);
+
+            entityList = new List<Entity>();
+            entityList.Add(Hero);
+            entityList.Add(new Entity(10, 10, 'T', Color.ForestGreen));
         }
 
         /// <summary>

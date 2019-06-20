@@ -46,7 +46,17 @@ namespace RLTutorial {
         public void Render(World world) {
             console.Clear();
             console.Print(0, 0, "Use the arrow keys or HJKLYUBN to move.");
-            console.Print(world.Hero.X, world.Hero.Y, world.Hero.Glyph);
+            foreach (var entity in world.Entities) {
+                RenderEntity(entity);
+            }
+        }
+
+        /// <summary>
+        ///   Draws a single entity onto the console.
+        /// </summary>
+        /// <param name="entity">The entity to draw.</param>
+        public void RenderEntity(Entity entity) {
+            console.Print(entity.X, entity.Y, entity.Glyph);
         }
     }
 }
