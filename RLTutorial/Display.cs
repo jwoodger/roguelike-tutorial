@@ -27,6 +27,9 @@ namespace RLTutorial {
     /// </summary>
     public class Display {
 
+        private static Color darkFloor = Color.Black;
+        private static Color darkWall = Color.PowderBlue;
+
         private Console console;
 
         /// <summary>
@@ -46,8 +49,25 @@ namespace RLTutorial {
         public void Render(World world) {
             console.Clear();
             console.Print(0, 0, "Use the arrow keys or HJKLYUBN to move.");
+            RenderMap(world.LevelMap);
             foreach (var entity in world.Entities) {
                 RenderEntity(entity);
+            }
+        }
+
+        /// <summary>
+        ///   Draws the game map onto the console.
+        /// </summary>
+        /// <param name="map">The map to draw.</param>
+        public void RenderMap(Map map) {
+            for (var y = 0; y < map.Height; y++) {
+                for (var x = 0; x < map.Width; x++) {
+                    if (map[x, y].Blocked) {
+                        console.SetBackground(x, y, darkWall);
+                    } else {
+                        console.SetBackground(x, y, darkFloor);
+                    }
+                }
             }
         }
 

@@ -34,6 +34,11 @@ namespace RLTutorial {
         public Entity Hero { get; private set; }
 
         /// <summary>
+        ///   The map of the current level.
+        /// </summary>
+        public Map LevelMap { get; private set; }
+
+        /// <summary>
         ///   Every entity that exists in the world.
         /// </summary>
         public IEnumerable<Entity> Entities {
@@ -55,6 +60,14 @@ namespace RLTutorial {
             entityList = new List<Entity>();
             entityList.Add(Hero);
             entityList.Add(new Entity(10, 10, 'T', Color.ForestGreen));
+
+            LevelMap = new Map(80, 25);
+            LevelMap[3, 5].Blocked = true;
+            LevelMap[3, 5].BlocksSight = true;
+            LevelMap[4, 5].Blocked = true;
+            LevelMap[4, 5].BlocksSight = true;
+            LevelMap[5, 5].Blocked = true;
+            LevelMap[5, 5].BlocksSight = true;
         }
 
         /// <summary>
