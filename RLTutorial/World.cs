@@ -56,12 +56,7 @@ namespace RLTutorial {
         /// <param name="startY">The hero's starting y-coordinate.</param>
         public World(int startX, int startY) {
             LevelMap = new Map(80, 25);
-            LevelMap[3, 5].Blocked = true;
-            LevelMap[3, 5].BlocksSight = true;
-            LevelMap[4, 5].Blocked = true;
-            LevelMap[4, 5].BlocksSight = true;
-            LevelMap[5, 5].Blocked = true;
-            LevelMap[5, 5].BlocksSight = true;
+            LevelMap.DigRoom(new Room(1, 1, 10, 10));
 
             Hero = new Entity(startX, startY, '@', Color.WhiteSmoke, LevelMap);
 

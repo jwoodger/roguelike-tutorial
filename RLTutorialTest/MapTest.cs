@@ -68,5 +68,18 @@ namespace RLTutorialTest {
             Assert.AreEqual(false, map[x, y].Blocked);
             Assert.AreEqual(false, map[x, y].BlocksSight);
         }
+
+        /// <summary>
+        ///   Tests that the map creates rooms correctly.
+        /// </summary>
+        [Test]
+        public void DigsRoom() {
+            var room = new Room(0, 0, mapWidth - 1, mapHeight - 1);
+            map.DigRoom(room);
+            Assert.AreEqual(true, map[0, 0].Blocked);
+            Assert.AreEqual(true, map[0, 0].BlocksSight);
+            Assert.AreEqual(true, map[mapWidth - 1, mapHeight - 1].Blocked);
+            Assert.AreEqual(true, map[mapWidth - 1, mapHeight - 1].BlocksSight);
+        }
     }
 }

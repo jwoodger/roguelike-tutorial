@@ -61,5 +61,26 @@ namespace RLTutorial {
                 return contents[y, x];
             }
         }
+
+        /// <summary>
+        ///   Creates a new room on the map.
+        /// </summary>
+        /// <param name="room">The room to create.</param>
+        public void DigRoom(Room room) {
+            for (var x = room.X1; x < room.X2 + 1; x++) {
+                this[x, room.Y1].Blocked = true;
+                this[x, room.Y1].BlocksSight = true;
+                this[x, room.Y2].Blocked = true;
+                this[x, room.Y2].BlocksSight = true;
+            }
+            for (var y = room.Y1; y < room.Y2 + 1; y++) {
+                this[room.X1, y].Blocked = true;
+                this[room.X1, y].BlocksSight = true;
+                this[room.X2, y].Blocked = true;
+                this[room.X2, y].BlocksSight = true;
+            }
+            this[room.X2, room.Y2].Blocked = true;
+            this[room.X2, room.Y2].BlocksSight = true;
+        }
     }
 }
