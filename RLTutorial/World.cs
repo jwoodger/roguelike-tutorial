@@ -55,12 +55,6 @@ namespace RLTutorial {
         /// <param name="startX">The hero's starting x-coordinate.</param>
         /// <param name="startY">The hero's starting y-coordinate.</param>
         public World(int startX, int startY) {
-            Hero = new Entity(startX, startY, '@', Color.WhiteSmoke);
-
-            entityList = new List<Entity>();
-            entityList.Add(Hero);
-            entityList.Add(new Entity(10, 10, 'T', Color.ForestGreen));
-
             LevelMap = new Map(80, 25);
             LevelMap[3, 5].Blocked = true;
             LevelMap[3, 5].BlocksSight = true;
@@ -68,6 +62,12 @@ namespace RLTutorial {
             LevelMap[4, 5].BlocksSight = true;
             LevelMap[5, 5].Blocked = true;
             LevelMap[5, 5].BlocksSight = true;
+
+            Hero = new Entity(startX, startY, '@', Color.WhiteSmoke, LevelMap);
+
+            entityList = new List<Entity>();
+            entityList.Add(Hero);
+            entityList.Add(new Entity(10, 10, 'T', Color.ForestGreen, LevelMap));
         }
 
         /// <summary>

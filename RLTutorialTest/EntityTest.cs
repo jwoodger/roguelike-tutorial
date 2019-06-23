@@ -30,16 +30,20 @@ namespace RLTutorialTest {
         private const int startX = 1;
         private const int startY = 1;
         private const int glyph = ' ';
+        private const int mapWidth = 10;
+        private const int mapHeight = 10;
         private static Color colour = Color.Black;
 
         private Entity entity;
+        private Map map;
 
         /// <summary>
         ///   Creates a new entity to do tests on.
         /// </summary>
         [SetUp]
         public void Setup() {
-            entity = new Entity(startX, startY, glyph, colour);
+            map = new Map(mapWidth, mapHeight);
+            entity = new Entity(startX, startY, glyph, colour, map);
         }
 
         /// <summary>
@@ -58,9 +62,30 @@ namespace RLTutorialTest {
         /// </summary>
         [Test]
         public void MoveChangesCoordinates() {
-            entity.Move(2, -3);
+            entity.Move(2, 3);
             Assert.AreEqual(startX + 2, entity.X);
-            Assert.AreEqual(startY - 3, entity.Y);
+            Assert.AreEqual(startY + 3, entity.Y);
+        }
+
+        /// <summary>
+        ///   Checks that the entity cannot move outside the map bounds.
+        /// </summary>
+        [Test]
+        public void CannotMoveBeyondBounds() {
+            entity.Move(-startX - 1, -startY - 1);
+            Assert.AreEqual(startX, entity.X);
+            Assert.AreEqual(startY, entity.Y);
+        }
+
+        /// <summary>
+        ///   Checks that the entity cannot move through a blocked tile.
+        /// </summary>
+        [Test]
+        public void CannotMoveThroughBlocked() {
+            map[startX + 1, startY].Blocked = true;
+            entity.Move(1, 0);
+            Assert.AreEqual(startX, entity.X);
+            Assert.AreEqual(startY, entity.Y);
         }
     }
 }

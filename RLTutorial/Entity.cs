@@ -25,6 +25,8 @@ namespace RLTutorial {
     /// </summary>
     public class Entity {
 
+        private Map map;
+
         /// <summary>
         ///   The x-coordinate of the entity.
         /// </summary>
@@ -47,10 +49,11 @@ namespace RLTutorial {
         /// <param name="y">The starting y-coordinate.</param>
         /// <param name="glyph">The character representing the entity.</param>
         /// <param name="colour">The colour of the entity.</param>
-        public Entity(int x, int y, int glyph, Color colour) {
+        public Entity(int x, int y, int glyph, Color colour, Map map) {
             X = x;
             Y = y;
             Glyph = new ColoredGlyph(glyph, colour, Color.Black);
+            this.map = map;
         }
 
         /// <summary>
@@ -59,8 +62,16 @@ namespace RLTutorial {
         /// <param name="dx">The amount by which to move left or right.</param>
         /// <param name="dy">The amount by which to move up or down.</param>
         public void Move(int dx, int dy) {
-            X += dx;
-            Y += dy;
+            var newX = X + dx;
+            var newY = Y + dy;
+            if (newX < 0 || newX >= map.Width || newY < 0 || newY >= map.Height) {
+                return;
+            }
+            if (map[newX, newY].Blocked) {
+                return;
+            }
+            X = newX;
+            Y = newY;
         }
     }
 }

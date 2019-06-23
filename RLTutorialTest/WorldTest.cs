@@ -44,10 +44,10 @@ namespace RLTutorialTest {
         /// </summary>
         [Test]
         public void MoveCommand() {
-            var moveCmd = new Move(-2, 3);
+            var moveCmd = new Move(2, 3);
             world.Process(moveCmd);
 
-            Assert.AreEqual(startX - 2, world.Hero.X);
+            Assert.AreEqual(startX + 2, world.Hero.X);
             Assert.AreEqual(startY + 3, world.Hero.Y);
         }
     }
