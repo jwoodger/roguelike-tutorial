@@ -46,7 +46,7 @@ namespace RLTutorial {
 
             for (var y = 0; y < height; y++) {
                 for (var x = 0; x < width; x++) {
-                    contents[y, x] = new Tile(false, false);
+                    contents[y, x] = new Tile(true);
                 }
             }
         }
@@ -67,20 +67,12 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="room">The room to create.</param>
         public void DigRoom(Room room) {
-            for (var x = room.X1; x < room.X2 + 1; x++) {
-                this[x, room.Y1].Blocked = true;
-                this[x, room.Y1].BlocksSight = true;
-                this[x, room.Y2].Blocked = true;
-                this[x, room.Y2].BlocksSight = true;
+            for (var y = room.Y1 + 1; y < room.Y2; y++) {
+                for (var x = room.X1 + 1; x < room.X2; x++) {
+                    this[x, y].Blocked = false;
+                    this[x, y].BlocksSight = false;
+                }
             }
-            for (var y = room.Y1; y < room.Y2 + 1; y++) {
-                this[room.X1, y].Blocked = true;
-                this[room.X1, y].BlocksSight = true;
-                this[room.X2, y].Blocked = true;
-                this[room.X2, y].BlocksSight = true;
-            }
-            this[room.X2, room.Y2].Blocked = true;
-            this[room.X2, room.Y2].BlocksSight = true;
         }
     }
 }

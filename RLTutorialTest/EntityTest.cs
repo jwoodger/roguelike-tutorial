@@ -43,6 +43,7 @@ namespace RLTutorialTest {
         [SetUp]
         public void Setup() {
             map = new Map(mapWidth, mapHeight);
+            map.DigRoom(new Room(-1, -1, mapWidth, mapHeight));
             entity = new Entity(startX, startY, glyph, colour, map);
         }
 

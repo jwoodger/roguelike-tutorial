@@ -48,7 +48,6 @@ namespace RLTutorial {
         /// <param name="world">The game state to render.</param>
         public void Render(World world) {
             console.Clear();
-            console.Print(0, 0, "Use the arrow keys or HJKLYUBN to move.");
             RenderMap(world.LevelMap);
             foreach (var entity in world.Entities) {
                 RenderEntity(entity);

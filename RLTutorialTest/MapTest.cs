@@ -57,16 +57,15 @@ namespace RLTutorialTest {
         }
 
         /// <summary>
-        ///   Checks that all tiles in the map are initialized so that they are not solid and do not
-        ///   block sight.
+        ///   Checks that all tiles are initialized so that they are solid and block sight.
         /// </summary>
         /// <param name="x">The column of the tile to check.</param>
         /// <param name="y">The row of the tile to check.</param>
         [TestCase(0, 0)]
         [TestCase(mapWidth - 1, mapHeight - 1)]
         public void InitializesTiles(int x, int y) {
-            Assert.AreEqual(false, map[x, y].Blocked);
-            Assert.AreEqual(false, map[x, y].BlocksSight);
+            Assert.AreEqual(true, map[x, y].Blocked);
+            Assert.AreEqual(true, map[x, y].BlocksSight);
         }
 
         /// <summary>
@@ -76,10 +75,10 @@ namespace RLTutorialTest {
         public void DigsRoom() {
             var room = new Room(0, 0, mapWidth - 1, mapHeight - 1);
             map.DigRoom(room);
-            Assert.AreEqual(true, map[0, 0].Blocked);
-            Assert.AreEqual(true, map[0, 0].BlocksSight);
-            Assert.AreEqual(true, map[mapWidth - 1, mapHeight - 1].Blocked);
-            Assert.AreEqual(true, map[mapWidth - 1, mapHeight - 1].BlocksSight);
+            Assert.AreEqual(false, map[1, 1].Blocked);
+            Assert.AreEqual(false, map[1, 1].BlocksSight);
+            Assert.AreEqual(false, map[mapWidth - 2, mapHeight - 2].Blocked);
+            Assert.AreEqual(false, map[mapWidth - 2, mapHeight - 2].BlocksSight);
         }
     }
 }
