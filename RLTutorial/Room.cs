@@ -15,6 +15,8 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace RLTutorial {
 
     public class Room {
@@ -40,6 +42,17 @@ namespace RLTutorial {
         public int Y2 { get; private set; }
 
         /// <summary>
+        ///   The coordinate of the center of the room.
+        /// </summary>
+        public Tuple<int, int> Center {
+            get {
+                var centerX = (X1 + X2) / 2;
+                var centerY = (Y1 + Y2) / 2;
+                return new Tuple<int, int>(centerX, centerY);
+            }
+        }
+
+        /// <summary>
         ///   Creates a new room.
         /// </summary>
         /// <param name="x">The column of the top-left corner of the room.</param>
@@ -51,6 +64,15 @@ namespace RLTutorial {
             Y1 = y;
             X2 = x + width;
             Y2 = y + height;
+        }
+
+        /// <summary>
+        ///   Determines if this room overlaps with another.
+        /// </summary>
+        /// <param name="other">The room to compare with.</param>
+        /// <returns>true if this room intersects with the other, false otherwise.</returns>
+        public bool Intersects(Room other) {
+            return (X1 <= other.X2 && X2 >= other.X1 && Y1 <= other.Y2 && Y2 >= other.Y1);
         }
     }
 }

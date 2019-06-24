@@ -15,6 +15,8 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace RLTutorial {
 
     /// <summary>
@@ -72,6 +74,36 @@ namespace RLTutorial {
                     this[x, y].Blocked = false;
                     this[x, y].BlocksSight = false;
                 }
+            }
+        }
+
+        /// <summary>
+        ///   Creates a horizontal hallway on the map.
+        /// </summary>
+        /// <param name="x1">The x-coordinate where the tunnel starts.</param>
+        /// <param name="x2">The x-coordinate where the tunnel ends.</param>
+        /// <param name="y">The y-coordinate of the tunnel.</param>
+        public void DigHTunnel(int x1, int x2, int y) {
+            var maxX = Math.Max(x1, x2);
+            var minX = Math.Min(x1, x2);
+            for (var x = minX; x <= maxX; x++) {
+                this[x, y].Blocked = false;
+                this[x, y].BlocksSight = false;
+            }
+        }
+
+        /// <summary>
+        ///   Creates a vertical hallway on the map.
+        /// </summary>
+        /// <param name="y1">The y-coordinate where the tunnel starts.</param>
+        /// <param name="y2">The y-coordinate where the tunnel ends.</param>
+        /// <param name="x">The x-coordinate of the tunnel.</param>
+        public void DigVTunnel(int y1, int y2, int x) {
+            var maxY = Math.Max(y1, y2);
+            var minY = Math.Min(y1, y2);
+            for (var y = minY; y <= maxY; y++) {
+                this[x, y].Blocked = false;
+                this[x, y].BlocksSight = false;
             }
         }
     }
