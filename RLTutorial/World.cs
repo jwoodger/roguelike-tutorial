@@ -52,12 +52,13 @@ namespace RLTutorial {
         /// <summary>
         ///   Creates a new game world.
         /// </summary>
-        /// <param name="startX">The hero's starting x-coordinate.</param>
-        /// <param name="startY">The hero's starting y-coordinate.</param>
-        public World(int startX, int startY) {
+        public World() {
             LevelMap = new Map(80, 25);
-            LevelMap.DigRoom(new Room(1, 1, 10, 10));
+            LevelMap.Generate();
 
+            var startCenter = LevelMap.StartRoom.Center;
+            var startX = startCenter.Item1;
+            var startY = startCenter.Item2;
             Hero = new Entity(startX, startY, '@', Color.WhiteSmoke, LevelMap);
 
             entityList = new List<Entity>();

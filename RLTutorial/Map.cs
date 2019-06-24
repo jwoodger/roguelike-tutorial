@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace RLTutorial {
 
@@ -23,6 +24,10 @@ namespace RLTutorial {
     ///   The map of a game level, represented as a 2D grid of tiles.
     /// </summary>
     public class Map {
+
+        private const int maxRooms = 30;
+        private const int roomMaxSize = 10;
+        private const int roomMinSize = 6;
 
         private Tile[,] contents;
 
@@ -35,6 +40,11 @@ namespace RLTutorial {
         ///   The height of the map grid.
         /// </summary>
         public int Height { get; private set; }
+
+        /// <summary>
+        ///   The first room on the map, where the player character must start.
+        /// </summary>
+        public Room StartRoom { get; private set; }
 
         /// <summary>
         ///   Creates a new map with the given dimensions.
@@ -51,6 +61,8 @@ namespace RLTutorial {
                     contents[y, x] = new Tile(true);
                 }
             }
+
+            StartRoom = null;
         }
 
         /// <summary>
@@ -104,6 +116,59 @@ namespace RLTutorial {
             for (var y = minY; y <= maxY; y++) {
                 this[x, y].Blocked = false;
                 this[x, y].BlocksSight = false;
+            }
+        }
+
+        /// <summary>
+        ///   Randomly generates a new map.
+        /// </summary>
+        public void Generate() {
+            var rng = new Random(Guid.NewGuid().GetHashCode());
+            var rooms = new List<Room>();
+            var roomCount = 0;
+
+            for (var r = 0; r < maxRooms; r++) {
+                var width = rng.Next(roomMinSize, roomMaxSize);
+                var height = rng.Next(roomMinSize, roomMaxSize);
+                var x = rng.Next(0, this.Width - width - 1);
+                var y = rng.Next(0, this.Height - height - 1);
+
+                var newRoom = new Room(x, y, width, height);
+                var validRoom = true;
+                foreach (var otherRoom in rooms) {
+                    if (newRoom.Intersects(otherRoom)) {
+                        validRoom = false;
+                        break;
+                    }
+                }
+
+                if (!validRoom) {
+                    continue;
+                }
+
+                DigRoom(newRoom);
+
+                if (roomCount == 0) {
+                    StartRoom = newRoom;
+                } else {
+                    var newCenter = newRoom.Center;
+                    var newX = newCenter.Item1;
+                    var newY = newCenter.Item2;
+                    var prevCenter = rooms[roomCount - 1].Center;
+                    var prevX = prevCenter.Item1;
+                    var prevY = prevCenter.Item2;
+
+                    if (rng.Next(0, 1) == 0) {
+                        DigHTunnel(prevX, newX, prevY);
+                        DigVTunnel(prevY, newY, newX);
+                    } else {
+                        DigVTunnel(prevY, newY, prevX);
+                        DigHTunnel(prevX, newX, newY);
+                    }
+                }
+
+                rooms.Add(newRoom);
+                roomCount++;
             }
         }
     }

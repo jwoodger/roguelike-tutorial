@@ -54,7 +54,7 @@ namespace RLTutorial {
         ///   Creates the application. Sets up the user interface and the game state.
         /// </summary>
         Program() {
-            world = new World(2, 2);
+            world = new World();
 
             Game.Create(ConsoleWidth, ConsoleHeight);
             Game.OnInitialize = Initialize;
