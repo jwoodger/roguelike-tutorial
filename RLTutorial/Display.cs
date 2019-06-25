@@ -28,7 +28,7 @@ namespace RLTutorial {
     public class Display {
 
         private static Color darkFloor = Color.Black;
-        private static Color darkWall = Color.PowderBlue;
+        private static Color darkWall = Color.Gray;
 
         private Console console;
 
