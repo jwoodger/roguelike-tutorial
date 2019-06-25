@@ -26,9 +26,6 @@ namespace RLTutorialTest {
     /// </summary>
     [TestFixture]
     class WorldTest {
-        private const int startX = 1;
-        private const int startY = 1;
-
         private World world;
 
         /// <summary>
@@ -36,7 +33,7 @@ namespace RLTutorialTest {
         /// </summary>
         [SetUp]
         public void Setup() {
-            world = new World(startX, startY);
+            world = new World();
         }
 
         /// <summary>
@@ -44,6 +41,11 @@ namespace RLTutorialTest {
         /// </summary>
         [Test]
         public void MoveCommand() {
+            world.LevelMap.DigRoom(new Room(0, 0, world.LevelMap.Width, world.LevelMap.Height));
+
+            var startX = world.Hero.X;
+            var startY = world.Hero.Y;
+
             var moveCmd = new Move(2, 3);
             world.Process(moveCmd);
 
