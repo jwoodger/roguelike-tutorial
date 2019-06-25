@@ -59,7 +59,7 @@ namespace RLTutorial {
             var startCenter = LevelMap.StartRoom.Center;
             var startX = startCenter.Item1;
             var startY = startCenter.Item2;
-            Hero = new Entity(startX, startY, 1, Color.WhiteSmoke, LevelMap);
+            Hero = new Entity(startX, startY, 2, Color.WhiteSmoke, LevelMap);
 
             entityList = new List<Entity>();
             entityList.Add(Hero);
