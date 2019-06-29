@@ -48,7 +48,7 @@ namespace RLTutorial {
         /// <param name="world">The game state to render.</param>
         public void Render(World world) {
             console.Clear();
-            RenderMap(world.LevelMap);
+            RenderMap(world);
             foreach (var entity in world.Entities) {
                 RenderEntity(entity);
             }
@@ -57,14 +57,18 @@ namespace RLTutorial {
         /// <summary>
         ///   Draws the game map onto the console.
         /// </summary>
-        /// <param name="map">The map to draw.</param>
-        public void RenderMap(Map map) {
-            for (var y = 0; y < map.Height; y++) {
-                for (var x = 0; x < map.Width; x++) {
-                    if (map[x, y].Blocked) {
-                        console.SetBackground(x, y, darkWall);
+        /// <param name="world">The world whose map we should draw.</param>
+        public void RenderMap(World world) {
+            for (var y = 0; y < world.LevelMap.Height; y++) {
+                for (var x = 0; x < world.LevelMap.Width; x++) {
+                    if (world.IsInFOV(x, y)) {
+                        if (world.LevelMap[x, y].Blocked) {
+                            console.SetBackground(x, y, darkWall);
+                        } else {
+                            console.SetBackground(x, y, darkFloor);
+                        }
                     } else {
-                        console.SetBackground(x, y, darkFloor);
+                        console.SetBackground(x, y, Color.Black);
                     }
                 }
             }
