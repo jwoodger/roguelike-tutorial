@@ -52,7 +52,9 @@ namespace RLTutorial {
             console.Clear();
             RenderMap(world);
             foreach (var entity in world.Entities) {
-                RenderEntity(entity);
+                if (world.IsInFOV(entity.X, entity.Y)) {
+                    RenderEntity(entity);
+                }
             }
         }
 

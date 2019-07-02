@@ -77,6 +77,7 @@ namespace RLTutorial {
 
             entityList = new List<Entity>();
             entityList.Add(Hero);
+            entityList.Add(new Entity(Hero.X - 2, Hero.Y - 2, 'T', Color.Yellow, LevelMap));
 
             RecalculateFOV();
         }
