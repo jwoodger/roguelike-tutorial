@@ -27,8 +27,10 @@ namespace RLTutorial {
     /// </summary>
     public class Display {
 
+        private static Color floor = Color.DimGray;
+        private static Color wall = Color.LightSeaGreen;
         private static Color darkFloor = Color.DarkSlateGray;
-        private static Color darkWall = Color.LightSeaGreen;
+        private static Color darkWall = Color.SeaGreen;
 
         private Console console;
 
@@ -61,15 +63,22 @@ namespace RLTutorial {
         public void RenderMap(World world) {
             for (var y = 0; y < world.LevelMap.Height; y++) {
                 for (var x = 0; x < world.LevelMap.Width; x++) {
+                    var colour = Color.Black;
                     if (world.IsInFOV(x, y)) {
                         if (world.LevelMap[x, y].Blocked) {
-                            console.SetBackground(x, y, darkWall);
+                            colour = wall;
                         } else {
-                            console.SetBackground(x, y, darkFloor);
+                            colour = floor;
                         }
-                    } else {
-                        console.SetBackground(x, y, Color.Black);
+
+                    } else if (world.IsSeen(x, y)) {
+                        if (world.LevelMap[x, y].Blocked) {
+                            colour = darkWall;
+                        } else {
+                            colour = darkFloor;
+                        }
                     }
+                    console.SetBackground(x, y, colour);
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace RLTutorial {
         public Entity(int x, int y, int glyph, Color colour, Map map) {
             X = x;
             Y = y;
-            Glyph = new ColoredGlyph(glyph, colour, Color.DarkSlateGray);
+            Glyph = new ColoredGlyph(glyph, colour, Color.DimGray);
             this.map = map;
         }
 

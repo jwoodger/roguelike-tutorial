@@ -31,6 +31,7 @@ namespace RLTutorial {
         private const int fovRadius = 10;
 
         private bool[,] fovMap;
+        private bool[,] seen;
         private List<Entity> entityList;
 
         /// <summary>
@@ -67,6 +68,12 @@ namespace RLTutorial {
             Hero = new Entity(startX, startY, 2, Color.WhiteSmoke, LevelMap);
 
             fovMap = new bool[levelHeight, levelWidth];
+            seen = new bool[levelHeight, levelWidth];
+            for (var y = 0; y < levelHeight; y++) {
+                for (var x = 0; x < levelWidth; x++) {
+                    seen[y, x] = false;
+                }
+            }
 
             entityList = new List<Entity>();
             entityList.Add(Hero);
@@ -94,6 +101,16 @@ namespace RLTutorial {
         /// <param name="y">The y coordinate.</param>
         public bool IsInFOV(int x, int y) {
             return (x >= 0 && x < levelWidth && y >= 0 && y < levelHeight && fovMap[y, x]);
+        }
+
+        /// <summary>
+        ///   Determines if the tile at the given coordinates has ever been seen by the player
+        ///   character.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        public bool IsSeen(int x, int y) {
+            return (x >= 0 && x < levelWidth && y >= 0 && y < levelHeight && seen[y, x]);
         }
 
         /// <summary>
@@ -125,6 +142,7 @@ namespace RLTutorial {
                     }
                     // Otherwise, mark this square as visible.
                     fovMap[mapY, mapX] = true;
+                    seen[mapY, mapX] = true;
                     // If this tile blocks sight, don't cast the ray past it.
                     if (LevelMap[mapX, mapY].BlocksSight) {
                         break;
