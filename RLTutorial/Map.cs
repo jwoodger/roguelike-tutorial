@@ -30,6 +30,7 @@ namespace RLTutorial {
         private const int roomMinSize = 6;
 
         private Tile[,] contents;
+        private List<Room> rooms;
 
         /// <summary>
         ///   The width of the map grid.
@@ -47,6 +48,17 @@ namespace RLTutorial {
         public Room StartRoom { get; private set; }
 
         /// <summary>
+        ///   Every room on the map.
+        /// </summary>
+        public IEnumerable<Room> Rooms {
+            get {
+                foreach (var room in rooms) {
+                    yield return room;
+                }
+            }
+        }
+
+        /// <summary>
         ///   Creates a new map with the given dimensions.
         /// </summary>
         /// <param name="width">The width of the map in tiles.</param>
@@ -62,6 +74,7 @@ namespace RLTutorial {
                 }
             }
 
+            rooms = new List<Room>();
             StartRoom = null;
         }
 
@@ -123,15 +136,14 @@ namespace RLTutorial {
         ///   Randomly generates a new map.
         /// </summary>
         public void Generate() {
-            var rng = new Random(Guid.NewGuid().GetHashCode());
-            var rooms = new List<Room>();
+            var rng = new Random();
             var roomCount = 0;
 
             for (var r = 0; r < maxRooms; r++) {
-                var width = rng.Next(roomMinSize, roomMaxSize);
-                var height = rng.Next(roomMinSize, roomMaxSize);
-                var x = rng.Next(0, this.Width - width - 1);
-                var y = rng.Next(0, this.Height - height - 1);
+                var width = rng.Next(roomMinSize, roomMaxSize + 1);
+                var height = rng.Next(roomMinSize, roomMaxSize + 1);
+                var x = rng.Next(0, this.Width - width);
+                var y = rng.Next(0, this.Height - height);
 
                 var newRoom = new Room(x, y, width, height);
                 var validRoom = true;
@@ -158,7 +170,7 @@ namespace RLTutorial {
                     var prevX = prevCenter.Item1;
                     var prevY = prevCenter.Item2;
 
-                    if (rng.Next(0, 1) == 0) {
+                    if (rng.Next(2) == 0) {
                         DigHTunnel(prevX, newX, prevY);
                         DigVTunnel(prevY, newY, newX);
                     } else {

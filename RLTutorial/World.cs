@@ -29,10 +29,29 @@ namespace RLTutorial {
         private const int levelWidth = 80;
         private const int levelHeight = 25;
         private const int fovRadius = 10;
+        private const int maxMonsters = 3;
 
         private bool[,] fovMap;
         private bool[,] seen;
         private List<Entity> entityList;
+
+        private void placeEntities(Room room) {
+            var rng = new Random();
+            var nMonsters = rng.Next(0, maxMonsters);
+
+            for (var i = 0; i < nMonsters; i++) {
+                var x = rng.Next(room.X1 + 1, room.X2);
+                var y = rng.Next(room.Y1 + 1, room.Y2);
+
+                Entity monster;
+                if (rng.Next(100) < 80) {
+                    monster = new Entity(x, y, 'o', Color.LightSalmon, LevelMap);
+                } else {
+                    monster = new Entity(x, y, 'T', Color.Khaki, LevelMap);
+                }
+                entityList.Add(monster);
+            }
+        }
 
         /// <summary>
         ///   The player character's entity.
@@ -67,6 +86,12 @@ namespace RLTutorial {
             var startY = startCenter.Item2;
             Hero = new Entity(startX, startY, 2, Color.WhiteSmoke, LevelMap);
 
+            entityList = new List<Entity>();
+            entityList.Add(Hero);
+            foreach (var room in LevelMap.Rooms) {
+                placeEntities(room);
+            }
+
             fovMap = new bool[levelHeight, levelWidth];
             seen = new bool[levelHeight, levelWidth];
             for (var y = 0; y < levelHeight; y++) {
@@ -74,10 +99,6 @@ namespace RLTutorial {
                     seen[y, x] = false;
                 }
             }
-
-            entityList = new List<Entity>();
-            entityList.Add(Hero);
-            entityList.Add(new Entity(Hero.X - 2, Hero.Y - 2, 'T', Color.Yellow, LevelMap));
 
             RecalculateFOV();
         }
