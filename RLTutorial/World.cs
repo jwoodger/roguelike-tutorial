@@ -34,6 +34,7 @@ namespace RLTutorial {
         private bool[,] fovMap;
         private bool[,] seen;
         private List<Entity> entityList;
+        private State currentState;
 
         private void placeEntities(Room room) {
             var rng = new Random();
@@ -101,6 +102,7 @@ namespace RLTutorial {
             }
 
             RecalculateFOV();
+            currentState = State.PlayerTurn;
         }
 
         /// <summary>
@@ -108,11 +110,21 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="command">A command for the hero.</param>
         public void Process(Command command) {
-            switch (command) {
-            case Move move:
-                Hero.Move(move.DeltaX, move.DeltaY);
-                RecalculateFOV();
-                break;
+            if (currentState == State.PlayerTurn) {
+                switch (command) {
+                case Move move:
+                    Hero.Move(move.DeltaX, move.DeltaY);
+                    RecalculateFOV();
+                    currentState = State.EnemyTurn;
+                    break;
+                }
+            } else if (currentState == State.EnemyTurn) {
+                foreach (var entity in entityList) {
+                    if (entity != Hero) {
+                        Console.WriteLine("The {0} ponders its life choices.", entity.Name);
+                    }
+                }
+                currentState = State.PlayerTurn;
             }
         }
 

@@ -92,9 +92,6 @@ namespace RLTutorial {
         /// <param name="time">Elapsed time (unused).</param>
         void Update(GameTime time) {
             var command = controller.InputCommand();
-            if (command == null) {
-                return;
-            }
             world.Process(command);
         }
     }
