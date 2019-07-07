@@ -15,8 +15,12 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+
 using Microsoft.Xna.Framework;
 using SadConsole;
+
+using Console = System.Console;
 
 namespace RLTutorial {
 
@@ -25,7 +29,7 @@ namespace RLTutorial {
     /// </summary>
     public class Entity {
 
-        private Map map;
+        private World world;
 
         /// <summary>
         ///   The x-coordinate of the entity.
@@ -43,17 +47,32 @@ namespace RLTutorial {
         public ColoredGlyph Glyph { get; private set; }
 
         /// <summary>
+        ///   What the entity is called.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        ///   Whether or not other entities can walk through this one.
+        /// </summary>
+        public bool Blocks { get; private set; }
+
+        /// <summary>
         ///   Creates a new entity,
         /// </summary>
         /// <param name="x">The starting x-coordinate.</param>
         /// <param name="y">The starting y-coordinate.</param>
         /// <param name="glyph">The character representing the entity.</param>
+        /// <param name="name">What the entity is called.
         /// <param name="colour">The colour of the entity.</param>
-        public Entity(int x, int y, int glyph, Color colour, Map map) {
+        /// <param name="world">The world this entity belongs to.</param>
+        /// <param name="blocks">Can other entities walk through this entity?</param>
+        public Entity(int x, int y, int glyph, string name, Color colour, World world, bool blocks = true) {
             X = x;
             Y = y;
             Glyph = new ColoredGlyph(glyph, colour, Color.DimGray);
-            this.map = map;
+            Name = name;
+            Blocks = blocks;
+            this.world = world;
         }
 
         /// <summary>
@@ -64,10 +83,15 @@ namespace RLTutorial {
         public void Move(int dx, int dy) {
             var newX = X + dx;
             var newY = Y + dy;
-            if (newX < 0 || newX >= map.Width || newY < 0 || newY >= map.Height) {
+            if (newX < 0 || newX >= world.LevelMap.Width || newY < 0 || newY >= world.LevelMap.Height) {
                 return;
             }
-            if (map[newX, newY].Blocked) {
+            if (world.LevelMap[newX, newY].Blocked) {
+                return;
+            }
+            var target = world.BlockingEntityAt(newX, newY);
+            if (target != null) {
+                Console.WriteLine("You kick the {0} in the grill!", target.Name);
                 return;
             }
             X = newX;

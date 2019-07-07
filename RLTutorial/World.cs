@@ -45,9 +45,9 @@ namespace RLTutorial {
 
                 Entity monster;
                 if (rng.Next(100) < 80) {
-                    monster = new Entity(x, y, 'o', Color.LightSalmon, LevelMap);
+                    monster = new Entity(x, y, 'o', "Orc", Color.LightSalmon, this);
                 } else {
-                    monster = new Entity(x, y, 'T', Color.Khaki, LevelMap);
+                    monster = new Entity(x, y, 'T', "Troll", Color.Khaki, this);
                 }
                 entityList.Add(monster);
             }
@@ -84,7 +84,7 @@ namespace RLTutorial {
             var startCenter = LevelMap.StartRoom.Center;
             var startX = startCenter.Item1;
             var startY = startCenter.Item2;
-            Hero = new Entity(startX, startY, 2, Color.WhiteSmoke, LevelMap);
+            Hero = new Entity(startX, startY, 2, "Hero", Color.WhiteSmoke, this);
 
             entityList = new List<Entity>();
             entityList.Add(Hero);
@@ -174,6 +174,21 @@ namespace RLTutorial {
                     y += dy;
                 }
             }
+        }
+
+        /// <summary>
+        ///   Checks if an entity exists at the given location which blocks the path of another
+        ///   entity.
+        /// </summary>
+        /// <param name="x">The x-coordinate to check.</param>
+        /// <param name="y">The y-coordinate to check.</param>
+        public Entity BlockingEntityAt(int x, int y) {
+            foreach (var entity in entityList) {
+                if (entity.X == x && entity.Y == y && entity.Blocks) {
+                    return entity;
+                }
+            }
+            return null;
         }
     }
 }
