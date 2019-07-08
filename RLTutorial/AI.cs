@@ -15,13 +15,33 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace RLTutorial {
 
     /// <summary>
-    ///   The current state of the game.
+    ///   The artificial intelligence controlling in-game NPCs.
     /// </summary>
-    public enum State {
-        PlayerTurn,
-        EnemyTurn,
+    public abstract class AI {
+
+        /// <summary>
+        ///   Which entity this AI is controlling.
+        /// </summary>
+        public Entity Owner;
+
+        /// <summary>
+        ///   Have the entity perform an action on this turn.
+        /// </summary>
+        public abstract void TakeTurn();
+    }
+
+    /// <summary>
+    ///   Basic AI for monsters.
+    /// </summary>
+    public class BasicMonster : AI {
+
+        public override void TakeTurn() {
+            Console.WriteLine("The {0} wonders when it can have a turn.", Owner.Name);
+        }
     }
 }

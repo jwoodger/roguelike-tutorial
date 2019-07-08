@@ -30,6 +30,7 @@ namespace RLTutorial {
     public class Entity {
 
         private World world;
+        private Fighter fighter;
 
         /// <summary>
         ///   The x-coordinate of the entity.
@@ -57,6 +58,11 @@ namespace RLTutorial {
         public bool Blocks { get; private set; }
 
         /// <summary>
+        ///   The AI controlling this entity. May be null if the user is controlling the entity.
+        /// </summary>
+        public AI AI { get; private set; }
+
+        /// <summary>
         ///   Creates a new entity,
         /// </summary>
         /// <param name="x">The starting x-coordinate.</param>
@@ -66,13 +72,24 @@ namespace RLTutorial {
         /// <param name="colour">The colour of the entity.</param>
         /// <param name="world">The world this entity belongs to.</param>
         /// <param name="blocks">Can other entities walk through this entity?</param>
-        public Entity(int x, int y, int glyph, string name, Color colour, World world, bool blocks = true) {
+        /// <param name="fighter">The entity's combat stats.</param>
+        /// <param name="ai">The AI controlling this entity.</param>
+        public Entity(int x, int y, int glyph, string name, Color colour, World world,
+                      bool blocks = true, Fighter fighter = null, AI ai = null) {
             X = x;
             Y = y;
             Glyph = new ColoredGlyph(glyph, colour, Color.DimGray);
             Name = name;
             Blocks = blocks;
             this.world = world;
+            this.fighter = fighter;
+            if (fighter != null) {
+                fighter.Owner = this;
+            }
+            AI = ai;
+            if (ai != null) {
+                ai.Owner = this;
+            }
         }
 
         /// <summary>

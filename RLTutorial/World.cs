@@ -46,9 +46,13 @@ namespace RLTutorial {
 
                 Entity monster;
                 if (rng.Next(100) < 80) {
-                    monster = new Entity(x, y, 'o', "Orc", Color.LightSalmon, this);
+                    var stats = new Fighter(10, 3, 0);
+                    var ai = new BasicMonster();
+                    monster = new Entity(x, y, 'o', "Orc", Color.LightSalmon, this, true, stats, ai);
                 } else {
-                    monster = new Entity(x, y, 'T', "Troll", Color.Khaki, this);
+                    var stats = new Fighter(16, 4, 1);
+                    var ai = new BasicMonster();
+                    monster = new Entity(x, y, 'T', "Troll", Color.Khaki, this, true, stats, ai);
                 }
                 entityList.Add(monster);
             }
@@ -121,7 +125,7 @@ namespace RLTutorial {
             } else if (currentState == State.EnemyTurn) {
                 foreach (var entity in entityList) {
                     if (entity != Hero) {
-                        Console.WriteLine("The {0} ponders its life choices.", entity.Name);
+                        entity.AI.TakeTurn();
                     }
                 }
                 currentState = State.PlayerTurn;
