@@ -18,6 +18,7 @@
 using System;
 
 using Microsoft.Xna.Framework;
+using RoyT.AStar;
 using SadConsole;
 
 using Console = System.Console;
@@ -113,6 +114,35 @@ namespace RLTutorial {
             }
             X = newX;
             Y = newY;
+        }
+
+        /// <summary>
+        ///   Moves the entity towards the given position.
+        /// </summary>
+        /// <param name="targetX">The x-coordinate to move towards.</param>
+        /// <param name="targetY">The y-coordinate to move towards.</param>
+        public void MoveTowards(int targetX, int targetY) {
+            var dx = targetX - X;
+            var dy = targetY - Y;
+            var distance = Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+            dx = (int) Math.Round(dx / distance);
+            dy = (int) Math.Round(dy / distance);
+            if (world.BlockingEntityAt(X + dx, Y + dy) == null) {
+                Move(dx, dy);
+            }
+        }
+
+        /// <summary>
+        ///   Use the A* algorithm to move towards the target entity.
+        /// </summary>
+        /// <param name="grid">The grid used to calculate the path.</param>
+        /// <param name="target">The entity to move towards.</param>
+        public void MoveAStar(Grid grid, Entity target) {
+            var path = grid.GetPath(new Position(X, Y), new Position(target.X, target.Y));
+            if (path.Length > 1 && path.Length <= 25) {
+                var next = path[1];
+                MoveTowards(next.X, next.Y);
+            }
         }
     }
 }

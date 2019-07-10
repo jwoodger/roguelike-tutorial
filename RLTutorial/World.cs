@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+using RoyT.AStar;
 
 namespace RLTutorial {
 
@@ -80,11 +81,25 @@ namespace RLTutorial {
         }
 
         /// <summary>
+        ///   A grid used for A* algorithm calculations.
+        /// </summary>
+        public Grid AStarGrid { get; private set; }
+
+        /// <summary>
         ///   Creates a new game world.
         /// </summary>
         public World() {
             LevelMap = new Map(levelWidth, levelHeight);
             LevelMap.Generate();
+
+            AStarGrid = new Grid(levelWidth, levelHeight, 1f);
+            for (var y = 0; y < levelHeight; y++) {
+                for (var x = 0; x < levelWidth; x++) {
+                    if (LevelMap[x, y].Blocked) {
+                        AStarGrid.BlockCell(new Position(x, y));
+                    }
+                }
+            }
 
             var startCenter = LevelMap.StartRoom.Center;
             var startX = startCenter.Item1;
@@ -125,7 +140,7 @@ namespace RLTutorial {
             } else if (currentState == State.EnemyTurn) {
                 foreach (var entity in entityList) {
                     if (entity != Hero) {
-                        entity.AI.TakeTurn();
+                        entity.AI.TakeTurn(this);
                     }
                 }
                 currentState = State.PlayerTurn;
