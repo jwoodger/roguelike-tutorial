@@ -31,7 +31,6 @@ namespace RLTutorial {
     public class Entity {
 
         private World world;
-        private Fighter fighter;
 
         /// <summary>
         ///   The x-coordinate of the entity.
@@ -64,6 +63,11 @@ namespace RLTutorial {
         public AI AI { get; private set; }
 
         /// <summary>
+        ///   The combat statistics of this entity.
+        /// </summary>
+        public Fighter Fighter { get; private set; }
+
+        /// <summary>
         ///   Creates a new entity,
         /// </summary>
         /// <param name="x">The starting x-coordinate.</param>
@@ -83,7 +87,7 @@ namespace RLTutorial {
             Name = name;
             Blocks = blocks;
             this.world = world;
-            this.fighter = fighter;
+            Fighter = fighter;
             if (fighter != null) {
                 fighter.Owner = this;
             }
@@ -108,8 +112,8 @@ namespace RLTutorial {
                 return;
             }
             var target = world.BlockingEntityAt(newX, newY);
-            if (target != null) {
-                Console.WriteLine("You kick the {0} in the grill!", target.Name);
+            if (target != null && Fighter != null) {
+                Fighter.Attack(target);
                 return;
             }
             X = newX;

@@ -15,6 +15,8 @@
  * along with RLTutorial.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
+
 namespace RLTutorial {
 
     /// <summary>
@@ -58,6 +60,30 @@ namespace RLTutorial {
             Health = health;
             Power = power;
             Defence = defence;
+        }
+
+        /// <summary>
+        ///   Be damaged by an enemy attack or some other effect.
+        /// </summary>
+        /// <param name="amount">How much damage is taken.</param>
+        public void TakeDamage(int amount) {
+            Health -= amount;
+        }
+
+        /// <summary>
+        ///   Attempt to do damage to another entity.
+        /// </summary>
+        /// <param name="target">The entity to attack.</param>
+        public void Attack(Entity target) {
+            var damage = Power - target.Fighter.Defence;
+            if (damage > 0) {
+                target.Fighter.TakeDamage(damage);
+                Console.WriteLine("The {0} attacks the {1} for {2} damage.", Owner.Name.ToLower(),
+                                  target.Name.ToLower(), damage);
+            } else {
+                Console.WriteLine("The {0} blocks the {1}'s attack.", target.Name.ToLower(),
+                                  Owner.Name.ToLower());
+            }
         }
     }
 }

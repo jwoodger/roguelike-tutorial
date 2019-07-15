@@ -48,7 +48,7 @@ namespace RLTutorial {
                 if (distance > 1) {
                     Owner.MoveAStar(world.AStarGrid, world.Hero);
                 } else {
-                    Console.WriteLine("The {0} insults you and hurts your feelings!", Owner.Name);
+                    Owner.Fighter.Attack(world.Hero);
                 }
             }
 
