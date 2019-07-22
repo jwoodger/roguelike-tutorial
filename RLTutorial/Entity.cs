@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using RoyT.AStar;
@@ -102,22 +103,26 @@ namespace RLTutorial {
         /// </summary>
         /// <param name="dx">The amount by which to move left or right.</param>
         /// <param name="dy">The amount by which to move up or down.</param>
-        public void Move(int dx, int dy) {
+        /// <returns>A collection of results based on what happened.</returns>
+        public IEnumerable<Result> Move(int dx, int dy) {
+            var results = new List<Result>();
             var newX = X + dx;
             var newY = Y + dy;
             if (newX < 0 || newX >= world.LevelMap.Width || newY < 0 || newY >= world.LevelMap.Height) {
-                return;
+                return results;
             }
             if (world.LevelMap[newX, newY].Blocked) {
-                return;
+                return results;
             }
             var target = world.BlockingEntityAt(newX, newY);
             if (target != null && Fighter != null) {
-                Fighter.Attack(target);
-                return;
+                var attackResults = Fighter.Attack(target);
+                results.AddRange(attackResults);
+                return results;
             }
             X = newX;
             Y = newY;
+            return results;
         }
 
         /// <summary>
@@ -147,6 +152,18 @@ namespace RLTutorial {
                 var next = path[1];
                 MoveTowards(next.X, next.Y);
             }
+        }
+
+        /// <summary>
+        ///   Kills off this entity.
+        /// </summary>
+        public void Die() {
+            Glyph.Glyph = '%';
+            Glyph.Foreground = Color.DarkRed;
+            Blocks = false;
+            Fighter = null;
+            AI = null;
+            Name = String.Format("remains of a {0}", Name);
         }
     }
 }

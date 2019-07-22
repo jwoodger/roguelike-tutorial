@@ -51,6 +51,11 @@ namespace RLTutorial {
         public void Render(World world) {
             console.Clear();
             RenderMap(world);
+            foreach (var entity in world.DeadEntities) {
+                if (world.IsInFOV(entity.X, entity.Y)) {
+                    RenderEntity(entity);
+                }
+            }
             foreach (var entity in world.Entities) {
                 if (world.IsInFOV(entity.X, entity.Y)) {
                     RenderEntity(entity);

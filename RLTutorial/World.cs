@@ -35,6 +35,7 @@ namespace RLTutorial {
         private bool[,] fovMap;
         private bool[,] seen;
         private List<Entity> entityList;
+        private List<Entity> deadList;
         private State currentState;
 
         private void placeEntities(Room room) {
@@ -59,6 +60,27 @@ namespace RLTutorial {
             }
         }
 
+        private void processResults(IEnumerable<Result> results) {
+            foreach (var result in results) {
+                switch (result) {
+                case Message message:
+                    Console.WriteLine(message.Text);
+                    break;
+                case Dead dead:
+                    var deathMessage = String.Format("The {0} is killed!", dead.Deceased.Name.ToLower());
+                    Console.WriteLine(deathMessage);
+                    dead.Deceased.Die();
+                    if (dead.Deceased == Hero) {
+                        currentState = State.GameOver;
+                    } else {
+                        entityList.Remove(dead.Deceased);
+                        deadList.Add(dead.Deceased);
+                    }
+                    break;
+                }
+            }
+        }
+
         /// <summary>
         ///   The player character's entity.
         /// </summary>
@@ -70,11 +92,22 @@ namespace RLTutorial {
         public Map LevelMap { get; private set; }
 
         /// <summary>
-        ///   Every entity that exists in the world.
+        ///   Every living entity that exists in the world.
         /// </summary>
         public IEnumerable<Entity> Entities {
             get {
                 foreach (var entity in entityList) {
+                    yield return entity;
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Every dead entity that exists in the world.
+        /// </summary>
+        public IEnumerable<Entity> DeadEntities {
+            get {
+                foreach (var entity in deadList) {
                     yield return entity;
                 }
             }
@@ -112,6 +145,7 @@ namespace RLTutorial {
             foreach (var room in LevelMap.Rooms) {
                 placeEntities(room);
             }
+            deadList = new List<Entity>();
 
             fovMap = new bool[levelHeight, levelWidth];
             seen = new bool[levelHeight, levelWidth];
@@ -133,18 +167,28 @@ namespace RLTutorial {
             if (currentState == State.PlayerTurn) {
                 switch (command) {
                 case Move move:
-                    Hero.Move(move.DeltaX, move.DeltaY);
+                    var results = Hero.Move(move.DeltaX, move.DeltaY);
+                    processResults(results);
                     RecalculateFOV();
+                    currentState = State.EnemyTurn;
+                    break;
+                case Wait wait:
                     currentState = State.EnemyTurn;
                     break;
                 }
             } else if (currentState == State.EnemyTurn) {
                 foreach (var entity in entityList) {
                     if (entity != Hero) {
-                        entity.AI.TakeTurn(this);
+                        if (entity.AI != null) {
+                            var results = entity.AI.TakeTurn(this);
+                            processResults(results);
+                        }
                     }
                 }
-                currentState = State.PlayerTurn;
+                // If the player hasn't died, then it's their turn.
+                if (currentState != State.GameOver) {
+                    currentState = State.PlayerTurn;
+                }
             }
         }
 

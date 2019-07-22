@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace RLTutorial {
 
@@ -66,24 +67,40 @@ namespace RLTutorial {
         ///   Be damaged by an enemy attack or some other effect.
         /// </summary>
         /// <param name="amount">How much damage is taken.</param>
-        public void TakeDamage(int amount) {
+        /// <returns>A list containing any events that occured when the fighter took
+        /// damage.</returns>
+        public IEnumerable<Result> TakeDamage(int amount) {
+            var results = new List<Result>();
             Health -= amount;
+            if (Health <= 0) {
+                results.Add(new Dead(Owner));
+            }
+            return results;
         }
 
         /// <summary>
         ///   Attempt to do damage to another entity.
         /// </summary>
         /// <param name="target">The entity to attack.</param>
-        public void Attack(Entity target) {
+        /// <returns>A list containing eny events that happened when the fighter attacked.</returns>
+        public IEnumerable<Result> Attack(Entity target) {
+            var results = new List<Result>();
+            if (target.Fighter == null) {
+                return results;
+            }
             var damage = Power - target.Fighter.Defence;
             if (damage > 0) {
-                target.Fighter.TakeDamage(damage);
-                Console.WriteLine("The {0} attacks the {1} for {2} damage.", Owner.Name.ToLower(),
-                                  target.Name.ToLower(), damage);
+                var damageResults = target.Fighter.TakeDamage(damage);
+                var message = String.Format("The {0} attacks the {1} for {2} damage.",
+                                            Owner.Name.ToLower(), target.Name.ToLower(), damage);
+                results.AddRange(damageResults);
+                results.Add(new Message(message));
             } else {
-                Console.WriteLine("The {0} blocks the {1}'s attack.", target.Name.ToLower(),
-                                  Owner.Name.ToLower());
+                var message = String.Format("The {0} blocks the {1}'s attack.",
+                                            target.Name.ToLower(), Owner.Name.ToLower());
+                results.Add(new Message(message));
             }
+            return results;
         }
     }
 }

@@ -18,39 +18,45 @@
 namespace RLTutorial {
 
     /// <summary>
-    ///   Any instruction that can be given to an in-game entity. Commands can be generated from
-    ///   user input or from the AI.
+    ///   Used to keep track of different events.
     /// </summary>
-    public interface Command {}
+    public abstract class Result {}
 
     /// <summary>
-    ///   A command to move an entity.
+    ///   The event occuring when an entity dies.
     /// </summary>
-    public class Move : Command {
+    public class Dead : Result {
 
         /// <summary>
-        ///   The amount by which to move the entity left or right.
+        ///   Which entity died.
         /// </summary>
-        public int DeltaX { get; private set; }
+        public Entity Deceased { get; private set; }
 
         /// <summary>
-        ///   The amount by which to move the entity up or down.
+        ///   Create a new "death" result.
         /// </summary>
-        public int DeltaY { get; private set; }
-
-        /// <summary>
-        ///   Creates a new move command.
-        /// </summary>
-        /// <param name="dx">The delta-x property.</param>
-        /// <param name="dy">The delta-y property.</param>
-        public Move(int dx, int dy) {
-            DeltaX = dx;
-            DeltaY = dy;
+        /// <param name="deceased">The entity that died.</param>
+        public Dead(Entity deceased) {
+            Deceased = deceased;
         }
     }
 
     /// <summary>
-    ///   The command to do nothing.
+    ///   A message to appear on the game's message log.
     /// </summary>
-    public class Wait : Command {}
+    public class Message : Result {
+
+        /// <summary>
+        ///   The text of the message.
+        /// </summary>
+        public string Text { get; private set; }
+
+        /// <summary>
+        ///   Creates a new message.
+        /// </summary>
+        /// <param name="text">What the message says.</param>
+        public Message(string text) {
+            Text = text;
+        }
+    }
 }

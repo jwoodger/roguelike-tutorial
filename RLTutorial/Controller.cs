@@ -42,6 +42,7 @@ namespace RLTutorial {
             { Keys.U, new Move(1, -1) },
             { Keys.B, new Move(-1, 1) },
             { Keys.N, new Move(1, 1) },
+            { Keys.Space, new Wait() },
         };
 
         private Keyboard keyboard;

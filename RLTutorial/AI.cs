@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace RLTutorial {
 
@@ -33,7 +34,8 @@ namespace RLTutorial {
         ///   Have the entity perform an action on this turn.
         /// </summary>
         /// <param name="world">The world that the owner lives in.</param>
-        public abstract void TakeTurn(World world);
+        /// <returns>A collection of all events that occured during the turn.</returns>
+        public abstract IEnumerable<Result> TakeTurn(World world);
     }
 
     /// <summary>
@@ -41,17 +43,19 @@ namespace RLTutorial {
     /// </summary>
     public class BasicMonster : AI {
 
-        public override void TakeTurn(World world) {
+        public override IEnumerable<Result> TakeTurn(World world) {
+            var results = new List<Result>();
             if (world.IsInFOV(Owner.X, Owner.Y)) {
                 var distance = Math.Sqrt(Math.Pow(world.Hero.X - Owner.X, 2) +
                                          Math.Pow(world.Hero.Y - Owner.Y, 2));
                 if (distance > 1) {
                     Owner.MoveAStar(world.AStarGrid, world.Hero);
                 } else {
-                    Owner.Fighter.Attack(world.Hero);
+                    var attackResults = Owner.Fighter.Attack(world.Hero);
+                    results.AddRange(attackResults);
                 }
             }
-
+            return results;
         }
     }
 }

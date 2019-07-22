@@ -23,5 +23,6 @@ namespace RLTutorial {
     public enum State {
         PlayerTurn,
         EnemyTurn,
+        GameOver,
     }
 }
